@@ -24,7 +24,7 @@ class Mdp {
 			let grid = [];
 			let value = [];
 			for (let j = 0; j < this.height; j++) {
-				grid.push({ value: rewards[1], img: 'grass.png', bg: 'bg-lime-950' });
+				grid.push({ value: rewards[1], img: 'grass.png', bg: 'bg-lime-400' });
 				value.push({ value: 0, action: 0 });
 			}
 			this.grid.push(grid);
@@ -36,12 +36,12 @@ class Mdp {
 			this.grid[obstacles[i].x][obstacles[i].y] = {
 				value: rewards[0],
 				img: 'swamp.png',
-				bg: 'bg-amber-950'
+				bg: 'bg-amber-400'
 			};
 		}
 
 		// Set the rewards for the end
-		this.grid[end.x][end.y] = { value: rewards[2], img: 'goal.png', bg: 'bg-red-600' };
+		this.grid[end.x][end.y] = { value: rewards[2], img: 'goal.png', bg: 'bg-blue-400' };
 
 		// Set the image for the start
 		this.grid[start.x][start.y] = { value: rewards[1], img: 'robot.png', bg: 'bg-slate-400' };

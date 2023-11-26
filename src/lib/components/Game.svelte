@@ -1,13 +1,13 @@
 <script>
 	import Mdp from '$lib/utils/mdp.js';
 	import { Motion } from 'svelte-motion';
+	import Arrow from './Arrow.svelte';
 
 	export let gamma;
 	export let epsilon;
 	export let width;
 	export let height;
 
-	let arrows = ['up_arrow.png', 'right_arrow.png', 'down_arrow.png', 'left_arrow.png'];
 	let mdp = new Mdp(gamma, epsilon, width, height);
 
 	let start = {
@@ -52,11 +52,15 @@
 		if (!isAnimating) {
 			isFlipped = !isFlipped;
 			setIsAnimating(true);
+			setTimeout(() => {
+				imageDisplay = !imageDisplay;
+			}, 800);
 		}
 	}
 
 	$: isFlipped = false;
 	$: isAnimating = false;
+	$: imageDisplay = true;
 </script>
 
 <div>
@@ -83,10 +87,13 @@
 						>
 							<!-- Display the img of the cell in mdp.grid[i][j].img -->
 							<div class="flip-card-front p-2">
-								<img alt="img-front" src={mdp.grid[i][j].img} />
+								{#if imageDisplay}
+									<img alt="img-front" src={mdp.grid[i][j].img} />
+								{/if}
 							</div>
-							<div class="flip-card-back p-5">
-								<img alt="img-back" src={arrows[mdp.values[i][j].action]} />
+							<div class="flip-card-back p-2 text-black text-sm">
+								<Arrow angle={parseInt(mdp.values[i][j].action) + 1} style="width:50px" />
+								V={mdp.values[i][j].value.toFixed(2)}
 							</div>
 						</div>
 					</Motion>
