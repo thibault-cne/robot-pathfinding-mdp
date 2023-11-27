@@ -52,9 +52,6 @@
 		if (!isAnimating) {
 			isFlipped = !isFlipped;
 			setIsAnimating(true);
-			setTimeout(() => {
-				imageDisplay = !imageDisplay;
-			}, 800);
 		}
 	}
 
@@ -70,14 +67,18 @@
 		style="grid-template-columns: repeat({width}, 75px); grid-template-rows: repeat({height}, 75px);"
 	>
 		<!-- Create a cell for each state -->
-		{#each Array(width) as _, i}
-			{#each Array(height) as _, j}
+		{#each Array(height) as _, i}
+			{#each Array(width) as _, j}
 				<div class="flip-card" style="grid-column: {i + 1}; grid-row: {j + 1};">
 					<Motion
 						let:motion
 						initial={false}
 						animate={{ rotateY: isFlipped ? 180 : 360 }}
-						transition={{ duration: 0.6, animationDirection: 'normal' }}
+						transition={{
+							duration: 0.6,
+							animationDirection: 'normal',
+							delay: (j * width + i) * 0.1
+						}}
 						onAnimationComplete={() => setIsAnimating(false)}
 					>
 						<div
