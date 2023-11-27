@@ -19,7 +19,6 @@ class Mdp {
 	// Create the grid layout with the given results, start, end and obstacles
 	createGrid(rewards, start, end, obstacles) {
 		// Create the grid with the given width and height
-
 		for (let i = 0; i < this.height; i++) {
 			let grid = [];
 			let value = [];
@@ -45,6 +44,9 @@ class Mdp {
 
 		// Set the image for the start
 		this.grid[start.x][start.y] = { value: rewards[1], img: 'robot.png', bg: 'bg-slate-400' };
+
+		// Set the start position
+		this.start = start;
 	}
 
 	// Get the possible actions for the given state
@@ -195,6 +197,34 @@ class Mdp {
 		}
 
 		return t;
+	}
+
+	likelyNextPos(state, action) {
+		// Return the most likely next position without taking into account the probabilities and walls
+		if (action == 0) {
+			return { x: state.x, y: state.y - 1 };
+		} else if (action == 1) {
+			return { x: state.x + 1, y: state.y };
+		} else if (action == 2) {
+			return { x: state.x, y: state.y + 1 };
+		} else {
+			return { x: state.x - 1, y: state.y };
+		}
+	}
+
+	getRobotPath() {
+		let path = [];
+		let state = this.start;
+		while (
+			this.grid[state.x][state.y].img !== 'goal.png' &&
+			path.length < this.width * this.height
+		) {
+			path.push(state);
+			let action = this.values[state.x][state.y].action;
+			state = this.likelyNextPos(state, action);
+		}
+		path.push(state);
+		return path;
 	}
 }
 

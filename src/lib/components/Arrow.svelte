@@ -1,5 +1,6 @@
 <script>
 	export let angle;
+	export let color = '#000';
 
 	let rotation = 0;
 	$: {
@@ -32,7 +33,7 @@
 		stroke-linecap="round"
 		stroke-linejoin="round"
 		class="feather feather-arrow-up"
-		style="transform: rotate({rotation}deg); color: #000;"
+		style="transform: rotate({rotation}deg); color: {color};"
 	>
 		<line x1="12" y1="50" x2="12" y2="5"></line>
 		<polyline points="5 12 12 5 19 12"></polyline>
