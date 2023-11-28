@@ -1,15 +1,31 @@
 <script>
-	import Mdp from '$lib/utils/mdp.js';
 	import { Motion } from 'svelte-motion';
-	import Arrow from './Arrow.svelte';
 
-	export let gamma;
-	export let epsilon;
-	export let width;
-	export let height;
-	export let start;
-	export let end;
-	export let reward;
+	import Mdp from '$lib/utils/mdp.js';
+	import Arrow from '$lib/components/Arrow.svelte';
+	import { store } from '$lib/utils/store.js';
+
+	let gamma;
+	let epsilon;
+	let width;
+	let height;
+	let start;
+	let end;
+	let rewards;
+
+	store.subscribe((value) => {
+		gamma = value.gamma;
+		epsilon = value.epsilon;
+		width = value.width;
+		height = value.height;
+		start = value.start;
+		end = value.end;
+		rewards = value.rewards;
+
+		if (value.game_component != null) {
+			value.game_component.generateGrid();
+		}
+	});
 
 	let mdp;
 
@@ -44,7 +60,7 @@
 
 	export function generateGrid() {
 		mdp = new Mdp(gamma, epsilon, width, height);
-		mdp.createGrid(reward, start, end, obstacles);
+		mdp.createGrid(rewards, start, end, obstacles);
 		mdp.valueIteration();
 		robot_path = mdp.getRobotPath();
 		isGenerated = true;
@@ -71,8 +87,8 @@
 			style="grid-template-columns: repeat({mdp.width}, 75px); grid-template-rows: repeat({mdp.height}, 75px);"
 		>
 			<!-- Create a cell for each state -->
-			{#each Array(mdp.height) as _, i}
-				{#each Array(mdp.width) as _, j}
+			{#each Array(mdp.width) as _, i}
+				{#each Array(mdp.height) as _, j}
 					<div class="flip-card" style="grid-column: {i + 1}; grid-row: {j + 1};">
 						<Motion
 							let:motion

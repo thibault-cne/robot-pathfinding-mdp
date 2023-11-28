@@ -19,10 +19,10 @@ class Mdp {
 	// Create the grid layout with the given results, start, end and obstacles
 	createGrid(rewards, start, end, obstacles) {
 		// Create the grid with the given width and height
-		for (let i = 0; i < this.height; i++) {
+		for (let i = 0; i < this.width; i++) {
 			let grid = [];
 			let value = [];
-			for (let j = 0; j < this.width; j++) {
+			for (let j = 0; j < this.height; j++) {
 				grid.push({ value: rewards[1], img: 'grass.png', bg: 'bg-lime-400' });
 				value.push({ value: 0, action: 0 });
 			}
@@ -169,9 +169,9 @@ class Mdp {
 	// Execute a step of the value iteration algorithm
 	valueIterationStep() {
 		let delta = 0;
-		for (let i = 0; i < this.height; i++) {
-			for (let j = 0; j < this.width; j++) {
-				let state = { x: j, y: i };
+		for (let i = 0; i < this.width; i++) {
+			for (let j = 0; j < this.height; j++) {
+				let state = { x: i, y: j };
 				let old_value = this.values[state.x][state.y].value;
 				let actions = this.getPossibleActions(state);
 				let values = {};
