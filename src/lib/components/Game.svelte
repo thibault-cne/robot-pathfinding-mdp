@@ -12,7 +12,7 @@
 	let start;
 	let end;
 	let rewards;
-	let swamps;
+	let swamps = [];
 
 	store.subscribe((value) => {
 		gamma = value.gamma;
@@ -22,7 +22,6 @@
 		start = value.start;
 		end = value.end;
 		rewards = value.rewards;
-		swamps = value.swamps;
 
 		if (value.game_component != null) {
 			value.game_component.generateGrid();
@@ -48,12 +47,28 @@
 		if (!isAnimating) {
 			isFlipped = !isFlipped;
 			setIsAnimating(true);
+			for (let i = 0; i < width; i++) {
+				for (let j = 0; j < height; j++) {
+					setTimeout(() => {
+						imageDisplay[i][j] = !imageDisplay[i][j];
+					}, (j * width + i)*100 + 600)
+				}
+			}
 		}
 	}
 
 	$: isFlipped = false;
 	$: isAnimating = false;
-	$: imageDisplay = true;
+	$: imageDisplay = []
+	$: {
+		imageDisplay = []
+		for (let i = 0; i < width; i++) {
+			imageDisplay[i] = [];
+			for (let j = 0; j < height; j++) {
+				imageDisplay[i][j] = true;
+			}
+		}
+	}
 	$: isGenerated = false;
 </script>
 
@@ -79,14 +94,22 @@
 							}}
 							onAnimationComplete={() => setIsAnimating(false)}
 						>
-							<div
+							<button
 								class="flip-card-inner border-black border-solid border-[1px] p-2 w-full h-full flex justify-center items-center {mdp
 									.grid[i][j].bg}"
 								use:motion
+								on:click={() => {
+									let temp = swamps.filter((value) => value.x != i || value.y != j);
+									if (swamps.filter((value) => value.x == i && value.y == j).length == 0) {
+										temp.push({ x: i, y: j });
+									}
+									swamps = temp;
+									generateGrid();
+								}}
 							>
 								<!-- Display the img of the cell in mdp.grid[i][j].img -->
 								<div class="flip-card-front p-2">
-									{#if imageDisplay}
+									{#if imageDisplay[i][j]}
 										<img alt="img-front" src={mdp.grid[i][j].img} />
 									{/if}
 								</div>
@@ -102,7 +125,7 @@
 									{/if}
 									V={mdp.values[i][j].value.toFixed(2)}
 								</div>
-							</div>
+							</button>
 						</Motion>
 					</div>
 				{/each}
