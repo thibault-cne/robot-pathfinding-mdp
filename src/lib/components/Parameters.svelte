@@ -13,7 +13,6 @@
 	let end;
 	let rewards;
 	let epsilon;
-	let swamps;
 
 	store.subscribe((value) => {
 		gamma = value.gamma;
@@ -23,7 +22,6 @@
 		start = value.start;
 		end = value.end;
 		rewards = value.rewards;
-		swamps = value.swamps;
 	});
 
 	function save() {
@@ -34,8 +32,7 @@
 			start,
 			end,
 			rewards,
-			epsilon,
-			swamps
+			epsilon
 		};
 		store.updateParams(params);
 		drawerStore.close();
@@ -85,9 +82,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="flex flex-col justify-center items-center">
-			<InputChip {width} {height} bind:value={swamps} />
 		</div>
 		<div class="flex flex-col justify-center items-center">
 			<div>

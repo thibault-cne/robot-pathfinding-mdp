@@ -91,13 +91,6 @@ function createStore() {
 		});
 	};
 
-	const updateSwamps = (swamps) => {
-		update((state) => {
-			state.swamps = swamps;
-			return state;
-		});
-	};
-
 	const updateParams = (params) => {
 		update((state) => {
 			state.width = params.width;
@@ -107,7 +100,6 @@ function createStore() {
 			state.start = params.start;
 			state.end = params.end;
 			state.rewards = params.rewards;
-			state.swamps = params.swamps;
 			return state;
 		});
 	};
@@ -122,7 +114,6 @@ function createStore() {
 		updateStart,
 		updateEnd,
 		updateRewards,
-		updateSwamps,
 		updateParams
 	};
 }

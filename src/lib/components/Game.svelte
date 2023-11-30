@@ -12,7 +12,7 @@
 	let start;
 	let end;
 	let rewards;
-	let swamps;
+	let swamps = [];
 
 	store.subscribe((value) => {
 		gamma = value.gamma;
@@ -22,7 +22,6 @@
 		start = value.start;
 		end = value.end;
 		rewards = value.rewards;
-		swamps = value.swamps;
 
 		if (value.game_component != null) {
 			value.game_component.generateGrid();
@@ -79,10 +78,18 @@
 							}}
 							onAnimationComplete={() => setIsAnimating(false)}
 						>
-							<div
+							<button
 								class="flip-card-inner border-black border-solid border-[1px] p-2 w-full h-full flex justify-center items-center {mdp
 									.grid[i][j].bg}"
 								use:motion
+								on:click={() => {
+									let temp = swamps.filter((value) => value.x != i || value.y != j);
+									if (swamps.filter((value) => value.x == i && value.y == j).length == 0) {
+										temp.push({ x: i, y: j });
+									}
+									swamps = temp;
+									generateGrid();
+								}}
 							>
 								<!-- Display the img of the cell in mdp.grid[i][j].img -->
 								<div class="flip-card-front p-2">
@@ -102,7 +109,7 @@
 									{/if}
 									V={mdp.values[i][j].value.toFixed(2)}
 								</div>
-							</div>
+							</button>
 						</Motion>
 					</div>
 				{/each}
