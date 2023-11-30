@@ -12,6 +12,7 @@
 	let start;
 	let end;
 	let rewards;
+	let swamps;
 
 	store.subscribe((value) => {
 		gamma = value.gamma;
@@ -21,6 +22,7 @@
 		start = value.start;
 		end = value.end;
 		rewards = value.rewards;
+		swamps = value.swamps;
 
 		if (value.game_component != null) {
 			value.game_component.generateGrid();
@@ -28,30 +30,6 @@
 	});
 
 	let mdp;
-
-	let obstacles = [
-		{
-			x: 1,
-			y: 1
-		},
-		{
-			x: 2,
-			y: 1
-		},
-		{
-			x: 3,
-			y: 1
-		},
-		{
-			x: 3,
-			y: 2
-		},
-		{
-			x: 3,
-			y: 3
-		}
-	];
-
 	let robot_path;
 
 	function setIsAnimating(value) {
@@ -60,7 +38,7 @@
 
 	export function generateGrid() {
 		mdp = new Mdp(gamma, epsilon, width, height);
-		mdp.createGrid(rewards, start, end, obstacles);
+		mdp.createGrid(rewards, start, end, swamps);
 		mdp.valueIteration();
 		robot_path = mdp.getRobotPath();
 		isGenerated = true;
