@@ -47,12 +47,28 @@
 		if (!isAnimating) {
 			isFlipped = !isFlipped;
 			setIsAnimating(true);
+			for (let i = 0; i < width; i++) {
+				for (let j = 0; j < height; j++) {
+					setTimeout(() => {
+						imageDisplay[i][j] = !imageDisplay[i][j];
+					}, (j * width + i)*100 + 600)
+				}
+			}
 		}
 	}
 
 	$: isFlipped = false;
 	$: isAnimating = false;
-	$: imageDisplay = true;
+	$: imageDisplay = []
+	$: {
+		imageDisplay = []
+		for (let i = 0; i < width; i++) {
+			imageDisplay[i] = [];
+			for (let j = 0; j < height; j++) {
+				imageDisplay[i][j] = true;
+			}
+		}
+	}
 	$: isGenerated = false;
 </script>
 
@@ -93,7 +109,7 @@
 							>
 								<!-- Display the img of the cell in mdp.grid[i][j].img -->
 								<div class="flip-card-front p-2">
-									{#if imageDisplay}
+									{#if imageDisplay[i][j]}
 										<img alt="img-front" src={mdp.grid[i][j].img} />
 									{/if}
 								</div>
