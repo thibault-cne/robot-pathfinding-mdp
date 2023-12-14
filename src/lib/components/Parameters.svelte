@@ -44,7 +44,7 @@
 		<div class="flex flex-col justify-center items-center">
 			<div>
 				<div>Gamma: {gamma}</div>
-				<input type="range" bind:value={gamma} min="0" max="1" step="0.01" />
+				<input type="range" bind:value={gamma} min="0.01" max="0.99" step="0.01" />
 			</div>
 			<div class="flex flex-row gap-2">
 				<div>
